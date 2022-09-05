@@ -18,60 +18,56 @@ function App() {
   return (
     <div className="home">
       <div className="home__header prose">
-        <h1 className="text-secondary">Pray Time</h1>
+        <h1 className="text-white">Pray Time</h1>
       </div>
 
       <div className="home__time prose">
 
         {prayTimes &&
-          <div>
-            <h3 className="text-secondary">{prayTimes[0].label}</h3>
-            <div className="text-white">{dayjs(prayTimes[0].time).format('HH:mm')}</div>
-          </div>}
+          <>
+            <div>
+              <div className="text-secondary text-3xl font-bold">{prayTimes[0].label}</div>
+              <div className="text-white">{dayjs(prayTimes[0].time).format('HH:mm')}</div>
+            </div>
 
+            <div className="home__time__current-time font-bold">
+              <div className="text-2xl text-white">
+                {dayjs().locale('id').format('dddd')}
+              </div>
 
-        <div className="home__time__current-time text-white">
-          <div className="">
-            {dayjs().locale('id').format('dddd')}
-          </div>
+              <div className="text-xl text-white">
+                {dayjs().locale('id').format('DD MMMM YYYY')}
+              </div>
 
-          <h5>
-            {dayjs().locale('id').format('DD MMMM YYYY')}
-          </h5>
+              <div className="text-xl text-white">
+                {new Intl.DateTimeFormat('id-ID-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }).format(Date.now())}
+              </div>
+            </div>
 
-          <h5>
-            {new Intl.DateTimeFormat('id-ID-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }).format(Date.now())}
-          </h5>
-
-        </div>
-
-
-        {prayTimes &&
-          <div>
-            <h3 className="text-secondary">{prayTimes[2].label}</h3>
-            <div className="text-white">{dayjs(prayTimes[2].time).format('HH:mm')}</div>
-          </div>}
-
+            <div>
+              <div className="text-secondary text-xl font-bold">{prayTimes[2].label}</div>
+              <div className="text-white">{dayjs(prayTimes[2].time).format('HH:mm')}</div>
+            </div>
+          </>
+        }
       </div>
 
-      <div className="prose">
-        <h3 className=" text-white">
+      <div className="">
+        <h3 className="text-white text-5xl font-bold">
           {dayjs(time).format('HH:mm:ss')}
         </h3>
       </div>
-      <div className="home__next-pray text-white">
+      <div className="text-secondary text-3xl font-bold">
         Adzan {nextPray?.label} : - {nextPray?.nextTime}
       </div>
-
-
 
       <div className="home__pray-times">
         {
           prayTimes &&
           prayTimes.filter(item => item.type === 'TIME_SHOLAT').map((item, index) => (
             <div key={index} className="home__pray-times__item">
-              <div>{item.label}</div>
-              <div>{dayjs(item.time).format('HH:mm')}</div>
+              <div className="text-2xl text-secondary font-bold">{item.label}</div>
+              <div className="text-xl">{dayjs(item.time).format('HH:mm')}</div>
             </div>
           ))
         }
