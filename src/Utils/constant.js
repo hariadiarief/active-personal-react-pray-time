@@ -1,2 +1,2 @@
 const TIME_SHOLAT = 1;
-const TIME_DESCRIPTION = 2;
+const TIME_INDICATION = 2;

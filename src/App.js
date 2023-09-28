@@ -57,9 +57,9 @@ function App() {
           {dayjs(time).format('HH:mm:ss')}
         </h3>
       </div>
-      <div className="text-secondary text-3xl font-bold">
+      {/* <div className="text-secondary text-3xl font-bold">
         Adzan {nextPray?.label} : - {nextPray?.nextTime}
-      </div>
+      </div> */}
 
       <div className="home__pray-times">
         {

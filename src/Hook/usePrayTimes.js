@@ -14,24 +14,48 @@ const customLabel = ["Imsak", "Subuh", "Suruq", "Zuhur", "Ashar", "sunset", "Mag
 export default function usePrayTimes() {
     const { time } = useTime()
     const [geolocation, setGeolocation] = useState(null)
-    const [prayTimes, setPrayTimes] = useState(null)
     const [nextPray, setNextPray] = useState(null)
-    const [activePray, setActivePray] = useState(null)
+    const [prayTimes, setPrayTimes] = useState(null)
+
+
+    /**
+     * [] show next Adzan
+     */
+    // useEffect(() => {
+    //     if (prayTimes) {
+    //         let searchNextPray = prayTimes.find((item) => dayjs(item.time).isAfter(time, 'minute') === true && item.type === 'TIME_SHOLAT')
+    //         searchNextPray.nextTime = dayjs.duration(searchNextPray.time.diff(dayjs())).format('HH:mm:ss')
+    //         setNextPray(searchNextPray)
+
+    //         let searchActive = prayTimes.filter((item) => dayjs(item.time).isBefore(time, 'minute') === true && item.type === 'TIME_SHOLAT')
+    //         searchNextPray.nextTime = dayjs.duration(searchNextPray.time.diff(dayjs())).format('HH:mm:ss')
+    //         setActivePray(searchActive)
+    //     }
+    // }, [time, prayTimes])
+
 
     useEffect(() => {
-        if (prayTimes) {
-            let searchNextPray = prayTimes.find((item) => dayjs(item.time).isAfter(time, 'minute') === true && item.type === 'TIME_SHOLAT')
-            searchNextPray.nextTime = dayjs.duration(searchNextPray.time.diff(dayjs())).format('HH:mm:ss')
-            setNextPray(searchNextPray)
+        // Get the current date and time using dayjs
+        const now = dayjs();
 
-            let searchActive = prayTimes.filter((item) => dayjs(item.time).isBefore(time, 'minute') === true && item.type === 'TIME_SHOLAT')
-            searchNextPray.nextTime = dayjs.duration(searchNextPray.time.diff(dayjs())).format('HH:mm:ss')
-            setActivePray(searchActive)
+        // Calculate the end of the day
+        const endOfDay = now.endOf('day');
 
-        }
-    }, [time, prayTimes])
+        // Calculate the time remaining until the end of the day (in milliseconds)
+        const timeUntilEndOfDay = endOfDay.diff(now);
 
-    useEffect(() => {
+        // Set an interval to call the function at the end of the day
+        const intervalId = setInterval(generatePrayTime, timeUntilEndOfDay);
+
+        // Call the function immediately on the first visit
+        generatePrayTime();
+
+        // Clear the interval when the component unmounts
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [geolocation]); //  dependencies
+    const generatePrayTime = () => {
         if (!geolocation) return
         if (geolocation.lat && geolocation.long) {
             const timeZone = dayjs().format('Z').split(':')[0]
@@ -55,12 +79,12 @@ export default function usePrayTimes() {
             const prayTimesFormated = Object.entries(generatedPrayTimes).map((item, index) => ({
                 label: customLabel[index],
                 time: dayjs().hour(item[1].split(':')[0]).minute(item[1].split(':')[1]).second('00'),
-                type: ['imsak', 'sunrise', 'sunset', 'midnight'].includes(item[0]) ? 'TIME_DESCRIPTION' : 'TIME_SHOLAT'
+                type: ['imsak', 'sunrise', 'sunset', 'midnight'].includes(item[0]) ? 'TIME_INDICATION' : 'TIME_SHOLAT'
             }))
 
             setPrayTimes(prayTimesFormated)
         }
-    }, [geolocation])
+    }
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -76,7 +100,6 @@ export default function usePrayTimes() {
             blockedGeolocation()
         }
     }, [])
-
     const blockedGeolocation = () => {
         alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
     }
