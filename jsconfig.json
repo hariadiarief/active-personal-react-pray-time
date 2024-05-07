@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "esnext",
-    "baseUrl": "src",
-    "jsx": "react"
-  },
-  "include": ["**/*.png", "**/*.svg"]
-}
