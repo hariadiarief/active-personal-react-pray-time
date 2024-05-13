@@ -1,0 +1,52 @@
+.home {
+    width: 100vw;
+    height: 100vh;
+    background:
+        linear-gradient(rgba(61, 131, 97, 0.771),
+            rgba(45, 45, 45, 0.719)),
+        url('../Assets/background/background.jpg') no-repeat;
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+
+
+    &__time {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 75vw;
+
+        margin: 100px 0 50px;
+
+        >div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    &__next-pray {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__pray-times {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        width: 100vw;
+
+        &__item {
+            background-color: #3d8361;
+            color: white;
+            width: calc(100% / 5);
+            text-align: center;
+        }
+    }
+}
