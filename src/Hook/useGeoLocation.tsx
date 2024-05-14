@@ -26,7 +26,7 @@ export const useGeoLocation = () => {
         geolocationBlocked()
       }
     }
-    
+
     if (!geolocation) {
       getGeolocation()
     }
