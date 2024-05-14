@@ -7,7 +7,9 @@ import {
   type PrayerTimes as IPrayerTimes,
   type CalculationParameters as ICalculationParameters,
 } from "adhan";
+
 import { useGeoLocation, IGeolocation } from "./useGeoLocation";
+import dayjs from "dayjs";
 
 type IGetPrayTime = {
   geolocation: IGeolocation;
@@ -24,7 +26,7 @@ export const usePrayTimes = () => {
       getPrayTime({
         geolocation,
         date: new Date(),
-        calculationParameters: CalculationMethod.MoonsightingCommittee(),
+        calculationParameters: CalculationMethod.MuslimWorldLeague(),
       });
     }
   }, [geolocation]);
@@ -47,34 +49,38 @@ export const usePrayTimes = () => {
     prayTimes: {
       sholat: [
         {
-          label: "fajr",
+          label: "Fajr",
           time: prayTimes?.fajr,
         },
         {
-          label: "dhuhr",
+          label: "Dhuhr",
           time: prayTimes?.dhuhr,
         },
         {
-          label: "asr",
+          label: "Asr",
           time: prayTimes?.asr,
         },
         {
-          label: "maghrib",
+          label: "Maghrib",
           time: prayTimes?.maghrib,
         },
         {
-          label: "isha",
+          label: "Isha",
           time: prayTimes?.isha,
         },
       ],
       additional: [
         {
-          label: "sunset",
-          time: prayTimes?.sunset,
+          label: "Imsak",
+          time: dayjs(prayTimes?.fajr).subtract(10, 'minute'),
         },
         {
-          label: "sunrise",
+          label: "Thulu'",
           time: prayTimes?.sunrise,
+        },
+        {
+          label: "Sunset",
+          time: prayTimes?.sunset,
         },
       ],
     },
